@@ -13,7 +13,7 @@ async function main() {
   // Deploy the contract
   const feePercentage = 1;
   const compoundYeildScanner = await CompoundYeildScanner.deploy(
-    ARBI_USDC_ADDR, COMPOUND_ARBI_USDC_ADDR, feePercentage
+    ARBI_USDC_ADDR, COMPOUND_ARBI_USDC_ADDR, feePercentage, signer.address
   );
 
   // Wait for the deployment to complete

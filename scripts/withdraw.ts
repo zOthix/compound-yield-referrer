@@ -14,7 +14,7 @@ const main = async () => {
         ];
         const tokenContract = new ethers.Contract(tokenAddress, erc20Abi, signer);
 
-        const contractAddress = '0x591b83f47BA1e4c6Ba3AbbEF2828BdF7F81f605A'; // Replace with your contract address
+        const contractAddress = '0x61c6Bf183DE69632f29E5E68A2F0b970b6092B2F'; // Replace with your contract address
         const yeildContract = CompoundYeildScanner__factory.connect(contractAddress, signer);
         const amount = "0.01";
 
@@ -61,8 +61,8 @@ const main = async () => {
             return;
         }
 
+        const withdrawAmount = "0.001";
         try {
-            const withdrawAmount = "0.001";
             const tx = await yeildContract.withdraw(ethers.parseUnits(withdrawAmount, 6));
             console.log("Withdraw transaction sent:", tx.hash);
             // Wait for the transaction to be mined
@@ -70,6 +70,19 @@ const main = async () => {
             console.log("Withdraw Transaction mined:", receipt?.hash);
         } catch (error: any) {
             console.error("Error during withdraw transaction:", error?.reason || error?.message || error);
+            return;
+        }
+
+        try {
+            const onePercentOfWithdrawAmount = (0.001 * 0.01).toString();
+            const tx = await yeildContract.withdrawOwner(ethers.parseUnits(onePercentOfWithdrawAmount, 6));
+
+            console.log("Withdraw owner transaction sent:", tx.hash);
+            // Wait for the transaction to be mined
+            const receipt = await tx.wait();
+            console.log("Withdraw owner Transaction mined:", receipt?.hash);
+        } catch (error: any) {
+            console.error("Error during withdraw owner transaction:", error?.reason || error?.message || error);
             return;
         }
 
